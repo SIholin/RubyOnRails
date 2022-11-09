@@ -1,0 +1,13 @@
+Jostain syystä konsolista on poistunut suurin osa komennoista.
+Käyttämäni komennot kuitenkin löytyvät historiasta niin listaan ne järjestyksessä:
+
+1. bd = Brewery.create name:'BrewDog', year:2007
+2. bd
+3. eka = Beer.create name:"Punk IPA", style:"IPA", brewery_id:5
+4. toka = Beer.create name:'Nanny State', style:'lowalcohol', brewery_id:5
+5. eka
+6. r1 = Rating.create score:5, beer_id:15
+7. r2 = Rating.create score:49, beer_id:15
+8. toka
+9. r3 = Rating.create score:30, beer_id:16
+10. r4 = Rating.create score:1, beer_id:16
