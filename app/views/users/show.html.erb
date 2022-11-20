@@ -1,0 +1,57 @@
+<p style="color: green"><%= notice %></p>
+<h1>Username:</h1>
+<p>
+  <%= @user.username %>
+</p>
+
+<% if @user.ratings.empty? %>
+    <p>
+    <%= @user.username %> has not made any ratings!
+    </p>
+  <% else %>
+    <p>
+      Has made <%= pluralize(@user.ratings.count, 'rating') %>, average rating <%= @user.average_rating(@user.ratings)%>
+    </p>
+    <p><strong>ratings</strong></p>
+    <ul>
+    <% @user.ratings.each do |rating| %>
+      <li>  
+        <p>
+          <%= "#{rating.to_s}" %>
+          <% if @user == current_user %>
+            <%= button_to 'delete', rating, method: :delete, form: { data: { turbo_confirm: 'Are you sure??' }} %>
+          <% end %>
+        </p>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+
+  <% if @user.beer_clubs.empty? %>
+    <p>
+    <%= @user.username %> is not part of any beer clubs!
+    </p>
+  <% else %>
+    <p>
+      User is part of <%= pluralize(@user.beer_clubs.count, 'beer club') %>
+    </p>
+    <p><strong>Member of:</strong></p>
+    <ul>
+    <% @user.beer_clubs.each do |club| %>
+      <li>  
+        <p>
+          <%= link_to club.name, club %>
+        </p>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+
+<div>
+  <%= link_to "Back to users", users_path %>
+  <% if @user == current_user %>
+  |
+  <%= link_to "Edit this user", edit_user_path(@user) %> 
+  <%= button_to "Destroy this user", @user, method: :delete %>
+  <% end %>
+</div>

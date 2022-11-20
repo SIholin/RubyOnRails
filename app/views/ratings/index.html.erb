@@ -8,11 +8,9 @@
 <ul>
  <% @ratings.each do |rating| %>
   <li>  
-    <p>
       <%= rating.beer.name + " "%>
-       <%= rating.score%>
-       <%= button_to 'delete', rating, method: :delete, form: { data: { turbo_confirm: 'Are you sure??' }} %>
-    </p>
+      <%= rating.score%>
+      <%= link_to rating.user.username, user_path(rating.user) %>
   </li>
  <% end %>
 </ul>

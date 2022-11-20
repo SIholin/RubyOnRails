@@ -1,0 +1,42 @@
+<p style="color: green"><%= notice %></p>
+    <h1>Name:
+    <%= @beer_club.name %>
+  </h1>
+
+  <p>
+    <strong>Founded:</strong>
+    <%= @beer_club.founded %>
+  </p>
+
+  <p>
+    <strong>City:</strong>
+    <%= @beer_club.city %>
+  </p>
+
+   <% if @beer_club.users.empty? %>
+    <p>
+    <%= @beer_club.name %> does not have any members!
+    </p>
+  <% else %>
+    <p>
+      Beer club has <%= pluralize(@beer_club.users.count, 'user') %>
+    </p>
+    <p><strong>Members:</strong></p>
+    <ul>
+    <% @beer_club.users.each do |user| %>
+      <li>  
+        <p>
+          <%= link_to user.username, user %>
+        </p>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+
+
+<div>
+  <%= link_to "Edit this beer club", edit_beer_club_path(@beer_club) %> |
+  <%= link_to "Back to beer clubs", beer_clubs_path %>
+
+  <%= button_to "Destroy this beer club", @beer_club, method: :delete %>
+</div>
