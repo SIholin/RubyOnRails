@@ -10,12 +10,14 @@ class User < ApplicationRecord
 
   def favorite_beer
     return nil if ratings.empty?
-    ratings.sort_by{|r| r.score}.last.beer
+
+    ratings.max_by(&:score).beer
   end
 
   def favorite_style
     return nil if ratings.empty?
-    styles = ratings.collect{ |r| r.beer.style}
+
+    styles = ratings.collect{ |r| r.beer.style }
     compare_styles(styles)
   end
 
@@ -23,9 +25,9 @@ class User < ApplicationRecord
     avg = 0
     s = ""
     styles.each do |style|
-      oliot = ratings.select{|r| r.beer.style == style} 
-      a = average(oliot) 
-      if a > avg 
+      oliot = ratings.select{ |r| r.beer.style == style }
+      a = average(oliot)
+      if a > avg
         avg = a
         s = style
       end
@@ -35,7 +37,8 @@ class User < ApplicationRecord
 
   def favorite_brewery
     return nil if ratings.empty?
-    breweries = ratings.collect{|r| r.beer.brewery}
+
+    breweries = ratings.collect{ |r| r.beer.brewery }
     compare_breweries(breweries)
   end
 
@@ -43,9 +46,9 @@ class User < ApplicationRecord
     avg = 0
     b = breweries.first
     breweries.each do |brewery|
-      oliot = ratings.select {|r| r.beer.brewery == brewery}
-      a = average(oliot) 
-      if a > avg 
+      oliot = ratings.select { |r| r.beer.brewery == brewery }
+      a = average(oliot)
+      if a > avg
         avg = a
         b = brewery
       end
@@ -54,9 +57,8 @@ class User < ApplicationRecord
   end
 
   def average(oliot)
-    sum = oliot.sum {|s| s.score}
+    sum = oliot.sum(&:score)
     count = oliot.count
-    test = sum/count
+    sum / count
   end
-
 end
