@@ -7,4 +7,56 @@ class User < ApplicationRecord
   has_many :beers, through: :ratings
   has_many :beer_clubs, through: :memberships
   has_secure_password
+
+  def favorite_beer
+    return nil if ratings.empty?
+    ratings.sort_by{|r| r.score}.last.beer
+  end
+
+  def favorite_style
+    return nil if ratings.empty?
+    styles = ratings.collect{ |r| r.beer.style}
+    compare_styles(styles)
+  end
+
+  def compare_styles(styles)
+    avg = 0
+    s = ""
+    styles.each do |style|
+      oliot = ratings.select{|r| r.beer.style == style} 
+      a = average(oliot) 
+      if a > avg 
+        avg = a
+        s = style
+      end
+    end
+    s
+  end
+
+  def favorite_brewery
+    return nil if ratings.empty?
+    breweries = ratings.collect{|r| r.beer.brewery}
+    compare_breweries(breweries)
+  end
+
+  def compare_breweries(breweries)
+    avg = 0
+    b = breweries.first
+    breweries.each do |brewery|
+      oliot = ratings.select {|r| r.beer.brewery == brewery}
+      a = average(oliot) 
+      if a > avg 
+        avg = a
+        b = brewery
+      end
+    end
+    b
+  end
+
+  def average(oliot)
+    sum = oliot.sum {|s| s.score}
+    count = oliot.count
+    test = sum/count
+  end
+
 end
