@@ -26,13 +26,18 @@ class MembershipsController < ApplicationController
   def create
     @membership = Membership.new params.require(:membership).permit(:beer_club_id)
     @membership.user = current_user
-    if @membership.save
-      redirect_to user_path current_user
-    else
-      clubs = BeerClub.all
-      m = current_user.memberships.pluck(:beer_club_id)
-      @beer_clubs = clubs.select { |club| m.include? club.id }
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @membership.save
+        format.html { redirect_to beer_club_url(@membership.beer_club), notice: "#{@membership.user.username} welcome to the club" }
+        format.json { render :show, status: :created, location: @membership.beer_club }
+        # redirect_to beer_club_path @membership.beer_club, notice: "moi"
+      else
+        clubs = BeerClub.all
+        m = current_user.memberships.pluck(:beer_club_id)
+        @beer_clubs = clubs.select { |club| m.include? club.id }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @membership.errors, status: :unprocessable_entity }
+      end
     end
     # respond_to do |format|
     # if @membership.save
@@ -60,10 +65,12 @@ class MembershipsController < ApplicationController
 
   # DELETE /memberships/1 or /memberships/1.json
   def destroy
-    @membership.destroy
+    m = @membership
+    name = m.beer_club.name
+    m.destroy
 
     respond_to do |format|
-      format.html { redirect_to memberships_url, notice: "Membership was successfully destroyed." }
+      format.html { redirect_to user_url(current_user), notice: "Membership in #{name} ended." }
       format.json { head :no_content }
     end
   end

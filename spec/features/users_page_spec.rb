@@ -5,8 +5,9 @@ include Helpers
 describe "User" do
   let!(:user) {FactoryBot.create :user}
   let!(:brewery) {FactoryBot.create :brewery}
+  let!(:style) {FactoryBot.create :style}
   let!(:beer1) {FactoryBot.create :beer, brewery: brewery } 
-  let!(:beer3) {FactoryBot.create :beer, brewery: brewery, style: 'kulta' } 
+  let!(:beer3) {FactoryBot.create :beer, brewery: brewery, style: style } 
   let!(:r1) {FactoryBot.create :rating, score: 2, beer: beer1, user: user}
   let!(:r2) {FactoryBot.create :rating, score: 11, beer: beer1, user: user}
   let!(:r3) {FactoryBot.create :rating, score: 49, beer: beer3, user: user}
@@ -71,7 +72,7 @@ describe "User" do
     expect(page).to have_content 'has not made any ratings!'
 
     visit user_path(user)
-    expect(page).to have_content 'Favorite beer style: kulta'
+    expect(page).to have_content 'Favorite beer style: Lager'
     expect(page).to have_content 'Favorite brewery: anonymous'
   end
 

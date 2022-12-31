@@ -9,6 +9,8 @@ gem "rails", "~> 7.0.4"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
+gem 'httparty'
+
 # Use sqlite3 as the database for Active Record
 # gem "sqlite3", "~> 1.4"
 
@@ -87,4 +89,5 @@ group :test do
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'simplecov', require: false
+  gem 'webmock'
 end

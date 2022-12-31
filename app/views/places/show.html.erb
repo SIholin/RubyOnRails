@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+    <h1>
+    <%= @place.name %>
+  </h1>
+
+  <p>
+    <strong>Status:</strong>
+    <%= @place.status %>
+  </p>
+
+  <p>
+    <strong>Address:</strong>
+    <%= @place.street %>,
+    <%= "#{@place.zip} #{@place.city}" %>
+
+  </p>
+
